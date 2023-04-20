@@ -15,6 +15,7 @@ Frecuencia varchar(1)
 
 create table if not exists Pedidos(
 idPedidos int primary key auto_increment,
+idClientes int,
 fecha date,
 idProductos varchar(30),
 cantidad varchar(30),
@@ -32,6 +33,9 @@ precio varchar(100)
 );
 
 create table if not exists Pedidos_Has_Productos(
+idClientes int,
+idPedidos int,
+idProductos int,
 foreign key (Cliente) references clientes(idClientes),
 foreign key (Pedido_Cliente) references Pedidos(idPedidos),
 foreign key (Producto) references Productos(idProductos));
