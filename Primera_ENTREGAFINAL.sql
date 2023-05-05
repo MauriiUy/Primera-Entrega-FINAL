@@ -21,7 +21,7 @@ idProductos varchar(30),
 cantidad varchar(30),
 montoApagar varchar(30),
 foreign key (idClientes) references clientes (idClientes)
-);
+ON DELETE CASCADE);
 
 
 create table if not exists Productos(
@@ -30,6 +30,8 @@ nombreProducto text(15),
 stock varchar(4),
 cantidad varchar(5),
 precio varchar(4)
+CONSTRAINT PK_Productos_idProductos 
+    CHECK (idProductos = idProductos)
 );
 
 CREATE TABLE IF NOT EXISTS Pedidos_Has_Productos (
@@ -39,7 +41,7 @@ CREATE TABLE IF NOT EXISTS Pedidos_Has_Productos (
     FOREIGN KEY (idClientes) REFERENCES clientes(idClientes),
     FOREIGN KEY (idPedidos) REFERENCES Pedidos(idPedidos),
     FOREIGN KEY (idProductos) REFERENCES Productos(idProductos)
-);
+ON DELETE NO ACTION);
 
 INSERT INTO clientes (idClientes, nombre, apellido, RazonSocial, NIdentidad, direccion, telefono, frecuencia)
 VALUES 
