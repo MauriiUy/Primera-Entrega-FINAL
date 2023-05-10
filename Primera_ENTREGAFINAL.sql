@@ -84,4 +84,15 @@ UPDATE productos
 SET precio = 100
 WHERE idProductos = 63390;
 
-  
+
+CREATE VIEW Producto as
+select idProductos , stock, precio
+from Productos
+where precio > 500;
+
+
+create view Fecha as
+select idPedidos , fecha ,  cantidad
+from Pedidos
+where montoApagar < 7000;
+
