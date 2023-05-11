@@ -24,15 +24,14 @@ foreign key (idClientes) references clientes (idClientes)
 ON DELETE CASCADE);
 
 
-create table if not exists Productos(
-idProductos int primary key auto_increment,
-nombreProducto text(15),
-stock varchar(4),
-cantidad varchar(5),
-precio varchar(4)
-CONSTRAINT PK_Productos_idProductos 
-    CHECK (idProductos = idProductos)
+CREATE TABLE IF NOT EXISTS Productos(
+    idProductos INT PRIMARY KEY AUTO_INCREMENT,
+    nombreProducto TEXT(15),
+    stock VARCHAR(4),
+    cantidad VARCHAR(5),
+    precio DECIMAL(10, 2)
 );
+
 
 CREATE TABLE IF NOT EXISTS Pedidos_Has_Productos (
     idProductos INT,
@@ -95,4 +94,23 @@ create view Fecha as
 select idPedidos , fecha ,  cantidad
 from Pedidos
 where montoApagar < 7000;
+
+DELIMITER //
+CREATE FUNCTION calcular_inventario() RETURNS DECIMAL(10, 2) DETERMINISTIC
+BEGIN
+    DECLARE valor_inventario DECIMAL(10, 2);
+    SELECT SUM(stock * precio) INTO valor_inventario FROM Productos;
+    RETURN valor_inventario;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE FUNCTION total_clientes() RETURNS INT deterministic
+BEGIN
+    DECLARE total_clientes INT;
+    SELECT COUNT(*) INTO total_clientes FROM Clientes;
+    RETURN total_clientes;
+END //
+DELIMITER ;
+
 
