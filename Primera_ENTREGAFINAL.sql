@@ -95,6 +95,9 @@ select idPedidos , fecha ,  cantidad
 from Pedidos
 where montoApagar < 7000;
 
+
+-- FUNCIONES
+
 DELIMITER //
 CREATE FUNCTION calcular_inventario() RETURNS DECIMAL(10, 2) DETERMINISTIC
 BEGIN
@@ -113,4 +116,40 @@ BEGIN
 END //
 DELIMITER ;
 
+-- PROCEDURE
 
+DELIMITER //
+CREATE PROCEDURE agregar_pedido(
+    IN cliente_id INT,
+    IN fecha_pedido DATE,
+    IN productos_id VARCHAR(30),
+    IN cantidades VARCHAR(30),
+    IN monto_a_pagar VARCHAR(30)
+)
+BEGIN
+    INSERT INTO Pedidos (idClientes, fecha, idProductos, cantidad, montoApagar)
+    VALUES (cliente_id, fecha_pedido, productos_id, cantidades, monto_a_pagar);
+END //
+DELIMITER //
+
+CALL agregar_pedido;
+
+
+
+
+DROP PROCEDURE IF EXISTS obtener_pedidos_cliente;
+DELIMITER //
+
+CREATE PROCEDURE obtener_pedidos_cliente(
+    IN cliente_id INT
+)
+BEGIN
+    SELECT idPedidos, fecha, idProductos, cantidad, montoApagar
+    FROM Pedidos
+    WHERE idClientes = cliente_id;
+END //
+
+DELIMITER ;
+
+SET @cliente_id = 3;
+CALL obtener_pedidos_cliente(@cliente_id);
