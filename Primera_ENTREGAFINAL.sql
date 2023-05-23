@@ -155,14 +155,14 @@ SET @cliente_id = 3;
 CALL obtener_pedidos_cliente(@cliente_id);
 
 
--- TRIGGERS
+-- TRIGGERSSSSSSS
 
 DELIMITER //
 CREATE TRIGGER auditar_inserts_pedidos
-AFTER INSERT ON Pedidos
+BEFORE INSERT ON Pedidos
 FOR EACH ROW
 BEGIN
-    INSERT INTO LOG_AUDITORIA (CAMPONUEVO_CAMPOANTERIOR, NOMBRE_DE_ACCION, NOMBRE_TABLA, USUARIO, FECHA_UPD_INS_DEL)
+    INSERT INTO Pedidos (CAMPONUEVO_CAMPOANTERIOR, NOMBRE_DE_ACCION, NOMBRE_TABLA, USUARIO, FECHA_UPD_INS_DEL)
     VALUES (CONCAT('Nuevo registro: ', NEW.idPedidos, ', Fecha: ', NEW.fecha, ', Productos: ', NEW.idProductos, ', Cantidad: ', NEW.cantidad, ', Monto a pagar: ', NEW.montoApagar), 'INS', 'Pedidos', USER(), NOW());
 END //
 DELIMITER ;
@@ -172,7 +172,10 @@ CREATE TRIGGER audit_cambios_productos
 AFTER UPDATE ON Productos
 FOR EACH ROW
 BEGIN
-    INSERT INTO LOG_AUDITORIA (CAMPONUEVO_CAMPOANTERIOR, NOMBRE_DE_ACCION, NOMBRE_TABLA, USUARIO, FECHA_UPD_INS_DEL)
-    VALUES (CONCAT('ID Producto: ', NEW.idProductos, ', Campo actualizado: Precio, Nuevo valor: ', NEW.precio, ', Valor anterior: ', OLD.precio), 'UPD', 'Productos', USER(), NOW());
+    INSERT INTO  Productos (CAMPONUEVO_CAMPOANTERIOR, NOMBRE_DE_ACCION, NOMBRE_TABLA, USUARIO, FECHA_UPD_INS_DEL)
+    VALUES (CONCAT('ID Producto: ', NEW.idProductos, ', Actualizado: Precio, Nuevo valor: ', NEW.precio, ', Valor anterior: ', OLD.precio), 'UPD', 'Productos', USER(), NOW());
 END //
 DELIMITER ;
+
+
+
